@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"log"
 	"log/slog"
 	"net/http"
@@ -13,8 +12,6 @@ import (
 )
 
 func main() {
-	ctx := context.Background()
-
 	authHandler := auth.NewAuthHandler()
 
 	mcpServer := mcp.NewMcpServer("1.0.0")
