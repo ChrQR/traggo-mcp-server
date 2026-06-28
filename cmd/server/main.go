@@ -8,7 +8,6 @@ import (
 
 	"github.com/ChrQR/traggo-mcp-server/internal/auth"
 	"github.com/ChrQR/traggo-mcp-server/internal/mcp"
-	"github.com/ChrQR/traggo-mcp-server/internal/shared"
 	"github.com/ChrQR/traggo-mcp-server/views/pages"
 	"github.com/a-h/templ"
 )
@@ -32,16 +31,18 @@ func main() {
 		Handler: mux,
 	}
 
-	db, err := shared.NewDB(ctx, "tmp/db.sqlite")
-	if err != nil {
-		slog.Error("unable to connect to db", "error", err.Error())
-		return
-	}
+	// db, err := shared.NewDB(ctx, "tmp/db.sqlite")
+	// if err != nil {
+	// 	slog.Error("unable to connect to db", "error", err.Error())
+	// 	return
+	// }
 
-	err = db.Ping()
-	if err != nil {
-		slog.Error("error pinging db", "error", err.Error())
-	}
+	// err = db.Ping()
+	// if err != nil {
+	// 	slog.Error("error pinging db", "error", err.Error())
+	// }
+
+	slog.Info("Starting server...")
 
 	log.Fatal(srv.ListenAndServe())
 }

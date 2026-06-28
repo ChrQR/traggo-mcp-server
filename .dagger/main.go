@@ -15,6 +15,7 @@ func (t *TraggoMcp) Build(
 ) (string, error) {
 
 	buildCtr := dag.Container().From("golang:1.26.4-bookworm").
+		WithEnvVariable("CGO_ENABLED", "0").
 		WithDirectory("/app", source).
 		WithWorkdir("/app").
 		WithMountedCache("/go/pkg/mod", dag.CacheVolume("go-mod-cache")).
@@ -26,7 +27,7 @@ func (t *TraggoMcp) Build(
 		WithFile("main", buildCtr.File("/app/build/main")).
 		WithDirectory("./assets", source.Directory("/assets")).
 		WithExposedPort(8080).
-		WithExec([]string{"./main"})
+		WithEntrypoint([]string{"/app/main"})
 
 	return finalCtr.
 		WithRegistryAuth("registry.rannes.dev", "christian@rannes.dev", registerPassword).
