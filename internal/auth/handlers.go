@@ -3,6 +3,7 @@ package auth
 import (
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/ChrQR/traggo-mcp-server/views/components"
 )
@@ -12,6 +13,7 @@ type authHandler struct {
 }
 
 func NewAuthHandler() *authHandler {
+	os.Getenv("TRAGGO_URL")
 	return &authHandler{
 		authService: authService{},
 	}

@@ -1,17 +1,3 @@
-// A generated module for TraggoMcp functions
-//
-// This module has been generated via dagger init and serves as a reference to
-// basic module structure as you get started with Dagger.
-//
-// Two functions have been pre-created. You can modify, delete, or add to them,
-// as needed. They demonstrate usage of arguments and return types using simple
-// echo and grep commands. The functions can be called from the dagger CLI or
-// from one of the SDKs.
-//
-// The first line in this comment block is a short description line and the
-// rest is a long description with more detail on the module's purpose or usage,
-// if appropriate. All modules should have a short description.
-
 package main
 
 import (
@@ -21,15 +7,29 @@ import (
 
 type TraggoMcp struct{}
 
-func (t *TraggoMcp) build(
+func (t *TraggoMcp) Build(
+	ctx context.Context,
 	// +default "."
-	source *dagger.Directory
-) {
-	
-	ctr := dag.Container().From("golang:1.26.4-bookwork").
+	source *dagger.Directory,
+	registerPassword *dagger.Secret,
+) (string, error) {
+
+	buildCtr := dag.Container().From("golang:1.26.4-bookworm").
 		WithDirectory("/app", source).
 		WithWorkdir("/app").
 		WithMountedCache("/go/pkg/mod", dag.CacheVolume("go-mod-cache")).
 		WithMountedCache("/root/.cache/go-build", dag.CacheVolume("go-build-cache")).
-		WithExec("")
+		WithExec([]string{"go", "build", "-o", "./build/main", "./cmd/server"})
+
+	finalCtr := dag.Container().From("cgr.dev/chainguard/wolfi-base").
+		WithWorkdir("/app").
+		WithFile("main", buildCtr.File("/app/build/main")).
+		WithDirectory("./assets", source.Directory("/assets")).
+		WithExposedPort(8080).
+		WithExec([]string{"./main"})
+
+	return finalCtr.
+		WithRegistryAuth("registry.rannes.dev", "christian@rannes.dev", registerPassword).
+		Publish(ctx, "registry.rannes.dev/traggo-mcp:latest")
+
 }

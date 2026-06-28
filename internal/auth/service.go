@@ -7,9 +7,9 @@ import (
 	"net/http"
 )
 
-type authService struct{}
-
-const TRAGGO_URL = "https://traggo.rannes.dev"
+type authService struct {
+	TraggoURL string
+}
 
 type loginRequest struct {
 	OperationName string         `json:"operationName"`
@@ -47,7 +47,7 @@ func (s *authService) Authenticate(username, password string) (string, error) {
 		return "", fmt.Errorf("marshal request: %w", err)
 	}
 
-	resp, err := http.Post(TRAGGO_URL+"/graphql", "application/json", bytes.NewReader(payload))
+	resp, err := http.Post(s.TraggoURL+"/graphql", "application/json", bytes.NewReader(payload))
 	if err != nil {
 		return "", fmt.Errorf("http request: %w", err)
 	}
