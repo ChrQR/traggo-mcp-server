@@ -2,6 +2,7 @@ package auth
 
 import (
 	"fmt"
+	"log/slog"
 	"net/http"
 	"os"
 
@@ -13,9 +14,11 @@ type authHandler struct {
 }
 
 func NewAuthHandler() *authHandler {
-	os.Getenv("TRAGGO_URL")
+	traggoURL := os.Getenv("TRAGGO_URL")
 	return &authHandler{
-		authService: authService{},
+		authService: authService{
+			TraggoURL: traggoURL,
+		},
 	}
 }
 
@@ -30,6 +33,7 @@ func (h *authHandler) Login() http.HandlerFunc {
 
 		token, err := h.authService.Authenticate(userName, password)
 		if err != nil {
+			slog.Error("error fetching token", "error", err.Error())
 			components.LoginForm(true, new("Invalid username or password")).Render(r.Context(), w)
 			return
 		}
