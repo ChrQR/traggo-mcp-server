@@ -1,0 +1,26 @@
+package pages
+
+import "github.com/ChrQR/traggo-mcp-server/views/layouts"
+import "github.com/ChrQR/traggo-mcp-server/views/components"
+
+templ Home() {
+	@layouts.BaseLayout("Home") {
+		<div class="my-6 w-fit mx-auto ">
+			<form class={ "flex justify-center flex-col gap-4 [.htmx-request]:animate-spin" }>
+				@components.Input(components.InputProps{
+					Name:  "basic",
+					Label: new("First input"),
+					Error: false,
+					Attributes: templ.Attributes{
+						"type":     "text",
+						"required": "true",
+					},
+				})
+				@components.Button(components.ButtonProps{
+					Text: "Press me!",
+					Type: "submit",
+				})
+			</form>
+		</div>
+	}
+}

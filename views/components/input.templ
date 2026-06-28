@@ -1,0 +1,25 @@
+package components
+
+type InputProps struct {
+	Name       string
+	Error      bool
+	Label      *string
+	Attributes templ.Attributes
+}
+
+templ Input(props InputProps) {
+	<div class={ "flex flex-col gap-2" }>
+		if props.Label != nil {
+			<label for={ props.Name }>{ *props.Label }</label>
+		}
+		<input
+			{ props.Attributes... }
+			name={ props.Name }
+			class={
+				"border-2 rounded-md px-4 py-2 focus:outline-2",                                                             // Base classes always applied
+				templ.KV("border-destructive outline-destructive focus:outline-destructive bg-destructive-50", props.Error), // Applied if Error is true
+				templ.KV("border-primary outline-primary focus:outline-primary", !props.Error),                              // Applied if Error is false
+			}
+		/>
+	</div>
+}

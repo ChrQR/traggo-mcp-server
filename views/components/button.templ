@@ -1,0 +1,39 @@
+package components
+
+type ButtonProps struct {
+	Text       string
+	Type       string
+	Attributes templ.Attributes
+	Style      Style
+}
+
+type Style string
+
+const (
+	Cancel Style = "cancel"
+	Ghost  Style = "ghost"
+)
+
+templ Button(props ButtonProps) {
+	<button
+		{ props.Attributes... }
+		class={
+			"border-2 border-slate-400 px-4 py-2 rounded-md hover:shadow-xl",
+			props.Style.Class(),
+		}
+		type={ props.Type }
+	>
+		{ props.Text }
+	</button>
+}
+
+func (s Style) Class() string {
+	switch s {
+	case Cancel:
+		return "bg-destructive text-destructive-foreground"
+	case Ghost:
+		return "bg-background"
+	default:
+		return "bg-primary hover:bg-secondary  text-primary-foreground"
+	}
+}

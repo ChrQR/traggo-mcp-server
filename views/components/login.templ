@@ -1,0 +1,38 @@
+package components
+
+templ LoginForm(hasError bool, errorText *string) {
+	<form class="space-y-4 relative" hx-post="/login" hx-target="this" hx-swap="outerHTML">
+		@Input(InputProps{
+			Name:  "username",
+			Label: new("Username"),
+			Error: hasError,
+			Attributes: templ.Attributes{
+				"type": "text",
+			},
+		})
+		@Input(InputProps{
+			Name:  "password",
+			Label: new("Password"),
+			Error: hasError,
+			Attributes: templ.Attributes{
+				"type": "password",
+			},
+		})
+		<div class={ "flex justify-end gap-4" }>
+			@Button(ButtonProps{
+				Text:  "Reset",
+				Type:  "reset",
+				Style: Ghost,
+			})
+			@Button(ButtonProps{
+				Text: "Login",
+				Type: "submit",
+			})
+		</div>
+		if hasError {
+			<div class={ "bg-card text-card-foreground absolute" }>
+				<span>{ *errorText }</span>
+			</div>
+		}
+	</form>
+}

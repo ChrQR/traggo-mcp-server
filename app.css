@@ -1,0 +1,195 @@
+/* ============================================================
+   Traggo — Tailwind theme
+   Grounded in the gopher mascot palette:
+     blue    = brand identity        (the "Traggo" wordmark)
+     sky     = friendly accent        (gopher body)
+     tan     = warm highlight         (snout / feet)
+     success = tracked / done         (clipboard check-marks)
+     ink     = text & outlines        (navy line-work)
+
+   Tailwind v4 (CSS-first). For v3, use tailwind.config.js instead.
+   ============================================================ */
+
+@import "tailwindcss";
+
+/* ---- Dark-mode strategy: toggle the `dark` class on <html> ---- */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ------------------------------------------------------------------
+   1. Semantic tokens — these flip between light and dark.
+   Reference them in markup as bg-background, text-foreground,
+   border-border, bg-card, text-muted-foreground, etc.
+------------------------------------------------------------------ */
+:root {
+    --background: #f6f9fb;
+    --foreground: #1e2b3a;
+
+    --card: #ffffff;
+    --card-foreground: #1e2b3a;
+
+    --popover: #ffffff;
+    --popover-foreground: #1e2b3a;
+
+    --muted: #eef2f6;
+    --muted-foreground: #5b6b7e;
+
+    --border: #dde5ec;
+    --input: #dde5ec;
+    --ring: #2f80c5;
+
+    --primary: #2f80c5;
+    --primary-foreground: #ffffff;
+
+    --secondary: #3ba9e8;
+    --secondary-foreground: #ffffff;
+
+    --accent: #d9a566;
+    --accent-foreground: #3a2a12;
+
+    --success: #3aa35a;
+    --success-foreground: #ffffff;
+
+    --destructive: #dc4b46;
+    --destructive-foreground: #ffffff;
+
+    --radius: 0.625rem;
+}
+
+.dark {
+    --background: #0f1d2a;
+    --foreground: #e6eef4;
+
+    --card: #16283a;
+    --card-foreground: #e6eef4;
+
+    --popover: #16283a;
+    --popover-foreground: #e6eef4;
+
+    --muted: #1b3047;
+    --muted-foreground: #93a7bd;
+
+    --border: #244056;
+    --input: #244056;
+    --ring: #64a3d8;
+
+    --primary: #64a3d8;
+    --primary-foreground: #0f1d2a;
+
+    --secondary: #54b2e8;
+    --secondary-foreground: #0f1d2a;
+
+    --accent: #e1c099;
+    --accent-foreground: #2a1d0a;
+
+    --success: #71cb8d;
+    --success-foreground: #0f1d2a;
+
+    --destructive: #f0726d;
+    --destructive-foreground: #2a0c0b;
+}
+
+/* ------------------------------------------------------------------
+   2. Map everything into Tailwind's @theme so utilities exist:
+   - semantic tokens (bg-background, text-muted-foreground, ...)
+   - full brand scales   (bg-primary-500, text-sky-300, ...)
+------------------------------------------------------------------ */
+@theme inline {
+    /* semantic */
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-success: var(--success);
+    --color-success-foreground: var(--success-foreground);
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+
+    --radius-sm: calc(var(--radius) - 4px);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) + 4px);
+
+    /* brand scale — primary (Traggo blue) */
+    --color-primary-50: #f5f8fa;
+    --color-primary-100: #e6eef4;
+    --color-primary-200: #c6daec;
+    --color-primary-300: #98c0e1;
+    --color-primary-400: #64a3d8;
+    --color-primary-500: #2f80c5;
+    --color-primary-600: #2769a2;
+    --color-primary-700: #205481;
+    --color-primary-800: #1c4263;
+    --color-primary-900: #17334a;
+    --color-primary-950: #112433;
+
+    /* brand scale — sky (gopher body / secondary) */
+    --color-sky-50: #f4f8fa;
+    --color-sky-100: #e4f0f6;
+    --color-sky-200: #c1dff1;
+    --color-sky-300: #8ecaec;
+    --color-sky-400: #54b2e8;
+    --color-sky-500: #3ba9e8;
+    --color-sky-600: #1991d6;
+    --color-sky-700: #1674aa;
+    --color-sky-800: #155b83;
+    --color-sky-900: #134561;
+    --color-sky-950: #0f3042;
+
+    /* brand scale — tan (accent / warmth) */
+    --color-tan-50: #faf8f5;
+    --color-tan-100: #f4eee6;
+    --color-tan-200: #ebdbc6;
+    --color-tan-300: #e1c099;
+    --color-tan-400: #d7a466;
+    --color-tan-500: #d9a566;
+    --color-tan-600: #ce8a38;
+    --color-tan-700: #a76f2b;
+    --color-tan-800: #815725;
+    --color-tan-900: #60431f;
+    --color-tan-950: #422f17;
+
+    /* brand scale — success (check-marks) */
+    --color-success-50: #f6f9f7;
+    --color-success-100: #e8f3eb;
+    --color-success-200: #cae7d3;
+    --color-success-300: #a0d9b2;
+    --color-success-400: #71cb8d;
+    --color-success-500: #3aa35a;
+    --color-success-600: #30864a;
+    --color-success-700: #276b3c;
+    --color-success-800: #205330;
+    --color-success-900: #1a3e25;
+    --color-success-950: #132b1a;
+
+    /* neutral scale — ink (cool navy slate) */
+    --color-ink-50: #f7f7f8;
+    --color-ink-100: #ebedef;
+    --color-ink-200: #d4d8de;
+    --color-ink-300: #b3bbc6;
+    --color-ink-400: #8f9bad;
+    --color-ink-500: #64748b;
+    --color-ink-600: #525f72;
+    --color-ink-700: #424d5b;
+    --color-ink-800: #353c47;
+    --color-ink-900: #292f36;
+    --color-ink-950: #1d2126;
+}
+
+/* Sensible page defaults */
+body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+}

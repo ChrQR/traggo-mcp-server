@@ -1,0 +1,13 @@
+package pages
+
+import "github.com/ChrQR/traggo-mcp-server/views/layouts"
+import "github.com/ChrQR/traggo-mcp-server/views/components"
+
+templ Login() {
+	@layouts.BaseLayout("Login to Traggo MCP") {
+		<div class="w-full h-full flex flex-col justify-center items-center">
+			<img class="h-32 mx-auto" src="/assets/traggo_gopher_transparent.webp"/>
+			@components.LoginForm(false, nil)
+		</div>
+	}
+}
