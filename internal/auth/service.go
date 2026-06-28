@@ -36,7 +36,7 @@ func (s *authService) Authenticate(username, password string) (string, error) {
 			"pass": password,
 		},
 		Query: `mutation Login($name: String!, $pass: String!) {
-			login(username: $name, pass: $pass, deviceName: "test", type: NoExpiry, cookie: false) {
+			login(username: $name, pass: $pass, deviceName: "mcp", type: NoExpiry, cookie: false) {
 				token
 			}
 		}`,

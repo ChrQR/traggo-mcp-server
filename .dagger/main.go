@@ -7,11 +7,21 @@ import (
 
 type TraggoMcp struct{}
 
+// Build compiles the server and publishes a container image to the given registry.
 func (t *TraggoMcp) Build(
 	ctx context.Context,
+	// Source directory of the project.
 	// +default "."
 	source *dagger.Directory,
-	registerPassword *dagger.Secret,
+	// Container registry to publish to, e.g. "registry.example.com".
+	registry string,
+	// Username to authenticate against the registry.
+	username string,
+	// Password (or token) for the registry, passed as a Dagger secret.
+	registryPassword *dagger.Secret,
+	// Image repository and tag, appended to the registry host.
+	// +default "traggo-mcp:latest"
+	image string,
 ) (string, error) {
 
 	buildCtr := dag.Container().From("golang:1.26.4-bookworm").
@@ -30,7 +40,7 @@ func (t *TraggoMcp) Build(
 		WithEntrypoint([]string{"/app/main"})
 
 	return finalCtr.
-		WithRegistryAuth("registry.rannes.dev", "christian@rannes.dev", registerPassword).
-		Publish(ctx, "registry.rannes.dev/traggo-mcp:latest")
+		WithRegistryAuth(registry, username, registryPassword).
+		Publish(ctx, registry+"/"+image)
 
 }

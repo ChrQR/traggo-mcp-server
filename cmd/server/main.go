@@ -4,6 +4,7 @@ import (
 	"log"
 	"log/slog"
 	"net/http"
+	"os"
 
 	"github.com/ChrQR/traggo-mcp-server/internal/auth"
 	"github.com/ChrQR/traggo-mcp-server/internal/mcp"
@@ -14,7 +15,8 @@ import (
 func main() {
 	authHandler := auth.NewAuthHandler()
 
-	mcpServer := mcp.NewMcpServer("1.0.0")
+	traggoURL := os.Getenv("TRAGGO_URL")
+	mcpServer := mcp.NewMcpServer("1.0.0", traggoURL)
 
 	mux := http.NewServeMux()
 	mux.Handle("/assets/", http.StripPrefix("/assets", http.FileServer(http.Dir("assets"))))
@@ -27,17 +29,6 @@ func main() {
 		Addr:    ":8080",
 		Handler: mux,
 	}
-
-	// db, err := shared.NewDB(ctx, "tmp/db.sqlite")
-	// if err != nil {
-	// 	slog.Error("unable to connect to db", "error", err.Error())
-	// 	return
-	// }
-
-	// err = db.Ping()
-	// if err != nil {
-	// 	slog.Error("error pinging db", "error", err.Error())
-	// }
 
 	slog.Info("Starting server...")
 
