@@ -1,3 +1,9 @@
+<p align="center">
+    <a href="https://github.com/ChrQR/traggo-mcp-server">
+        <img height="300px" src="https://github.com/ChrQR/traggo-mcp-server/blob/main/assets/traggo_gopher_transparent.webp" />
+    </a>
+</p>
+
 # Traggo MCP Server
 
 An [MCP](https://modelcontextprotocol.io) server that lets AI assistants track time in
